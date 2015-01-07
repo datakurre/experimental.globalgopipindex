@@ -9,6 +9,34 @@ from plone.uuid.interfaces import IUUID
 
 
 # noinspection PyUnresolvedReferences
+def iter_pos_chain(container_, id__, cache, seen):
+    if getattr(Acquisition.aq_base(container_),
+               'getObjectPosition', None):
+        yield container_.getObjectPosition(id__)
+    else:
+        yield 0
+
+    parent_ = Acquisition.aq_parent(container_)
+
+    uuid = IUUID(container_, None)
+    if uuid in seen:
+        return
+
+    if uuid in cache:
+        for value in cache[uuid]:
+            yield value
+
+    else:
+        if hasattr(Acquisition.aq_base(parent_),
+                   'getObjectPosition'):
+            for p in iter_pos_chain(parent_,
+                                    container_.getId(),
+                                    cache, seen + [uuid]):
+                cache.setdefault(uuid, []).append(p)
+                yield p
+
+
+# noinspection PyUnresolvedReferences
 def documentToKeyMap(self):
     # we need to get the containers in order to get the respective
     # positions of the search results, but before that we need those
@@ -46,41 +74,13 @@ def documentToKeyMap(self):
         return pos
     else:
         # otherwise the entire map needs to be constructed...
-
-        # noinspection PyUnresolvedReferences
-        def iter_pos_chain(container_, id__, cache, seen):
-            if getattr(Acquisition.aq_base(container_),
-                       'getObjectPosition', None):
-                yield container_.getObjectPosition(id__)
-            else:
-                yield 0
-
-            parent_ = Acquisition.aq_parent(container_)
-
-            uuid = IUUID(container_, None)
-            if uuid in seen:
-                return
-
-            if uuid in cache:
-                for value in cache[uuid]:
-                    yield value
-
-            else:
-                if hasattr(Acquisition.aq_base(parent_),
-                           'getObjectPosition'):
-                    for p in iter_pos_chain(parent_,
-                                            container_.getId(),
-                                            cache, seen + [uuid]):
-                        cache.setdefault(uuid, []).append(p)
-                        yield p
-
         chain_cache = {}
         for rid, container, id_ in items:
             pos[rid] = tuple(reversed(tuple(
                 iter_pos_chain(container, id_, chain_cache, [])))) + (rid,)
 
-        chain_order = sorted(
-            pos.values(), key=lambda x: itemgetter(*list(range(len(x)-1)))(x))
+        chain_order_key = lambda x: itemgetter(*list(range(len(x) - 1)))(x)
+        chain_order = sorted(pos.values(), key=chain_order_key)
 
         for rid in pos:
             pos[rid] = chain_order.index(pos[rid])

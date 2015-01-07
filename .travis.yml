@@ -6,7 +6,7 @@ sudo: false
 services:
 - redis
 before_install:
-- sed -ibak -e s/4.3.x/$PLONE/g buildout.cfg
+- sed -i.old -e s/4.3.x/$PLONE/g buildout.cfg versions:zc.recipe.egg=
 install:
 - python bootstrap.py
 - bin/buildout -N -t 3
