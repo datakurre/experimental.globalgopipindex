@@ -6,10 +6,10 @@ sudo: false
 services:
 - redis
 before_install:
-- sed -i.old -e s/4.3.x/$PLONE/g buildout.cfg versions:zc.recipe.egg=
+- sed -i.old -e s/4.3.x/$PLONE/g buildout.cfg
 install:
 - python bootstrap.py
-- bin/buildout -N -t 3
+- bin/buildout -N -t 3 versions:zc.recipe.egg=
 script:
 - bin/test
 - bin/code-analysis
