@@ -16,3 +16,7 @@ This package patches the results to be sorted as follows:
     >>> [brain.getPath() for brain in pc(sort_on='getObjPositionInParent')]
     ['/plone/a', '/plone/b', '/plone/a/a1', '/plone/a/a2', '/plone/a/a3', '/plone/b/b1', '/plone/b/b2', '/plone/b/b3']
 
+This package may affect the performance of sorting by ``getObjPositionInParent``.
+
+.. image:: https://secure.travis-ci.org/datakurre/experimental.globalgopipindex.png
+   :target: http://travis-ci.org/datakurre/experimental.globalgopipindex

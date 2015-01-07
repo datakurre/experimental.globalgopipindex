@@ -18,8 +18,8 @@ setup(
     keywords='',
     author='Asko Soukka',
     author_email='asko.soukka@iki.fi',
-    url='https://source.kopla.jyu.fi/code/plone-packages/experimental.globalgopipindex',  # noqa
-    license='EUPL',
+    url='https://github.com/datakurre/experimental.globalgopipindex',
+    license='GPL',
     package_dir={'': 'src'},
     packages=find_packages('src', exclude=['ez_setup']),
     namespace_packages=['experimental'],
