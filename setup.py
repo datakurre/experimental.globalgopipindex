@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 setup(
     name='experimental.globalgopipindex',
     version='1.0.1.dev0',
-    description='',
+    description='Patch Plone GopipIndex to sort objects by "global" position',
     long_description=(open('README.rst').read() + '\n' +
                       open('CHANGES.rst').read()),
     classifiers=[
