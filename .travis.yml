@@ -16,7 +16,7 @@ script:
 cache:
   directories:
   - eggs
-- env:
+env:
   - PLONE=4.1.x
   - PLONE=4.2.x
   - PLONE=4.3.x
